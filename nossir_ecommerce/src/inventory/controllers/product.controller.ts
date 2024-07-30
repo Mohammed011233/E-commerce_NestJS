@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ProductService } from "../services/product.service";
 import { CreateProductDto } from "../dto/createProduct.dto";
 
@@ -8,6 +8,7 @@ export class ProductController{
     constructor(private productService: ProductService){}
 
     @Post()
+    @UsePipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true}))
     async createProduct(@Body(new ValidationPipe()) productDto: CreateProductDto){
         return this.productService.createProduct(productDto);
     }
@@ -23,7 +24,8 @@ export class ProductController{
 
     }
 
-    @Put(":productId")
+    @Patch(":productId")
+    @UsePipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true}))
     async updateProduct(
         @Param("productId") productId: String,
         @Body() productDto: CreateProductDto

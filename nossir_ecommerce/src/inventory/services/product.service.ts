@@ -1,11 +1,13 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UseFilters } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Product, ProductDoc } from "../models/product.entity";
 import { Model } from "mongoose";
 import { CreateProductDto } from "../dto/createProduct.dto";
 import { error } from "console";
+import { GlobalExceptionFilter } from "src/filters/globalException.filter";
 
 @Injectable()
+@UseFilters(GlobalExceptionFilter)
 export class ProductService{
 
     constructor(@InjectModel(Product.name) private productRepo: Model<ProductDoc> ){}
