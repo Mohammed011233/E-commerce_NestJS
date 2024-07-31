@@ -1,10 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UseFilters } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Category, CategoryDoc } from "../models/category.entity";
 import { Model } from "mongoose";
 import { CategoryDto } from "../dto/category.dto";
+import { GlobalExceptionFilter } from "src/filters/globalException.filter";
 
 @Injectable()
+@UseFilters(GlobalExceptionFilter)
 export class CategoryService{
     constructor(@InjectModel(Category.name) private categoryRepo: Model<CategoryDoc>){}
 
