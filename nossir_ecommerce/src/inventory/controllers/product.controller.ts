@@ -1,6 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ProductService } from "../services/product.service";
 import { CreateProductDto } from "../dto/createProduct.dto";
+import { ProductDoc } from "../models/product.entity";
+import { IsString, IsUUID } from "class-validator";
+import { query } from "express";
 
 @Controller("products")
 export class ProductController{
@@ -8,32 +11,33 @@ export class ProductController{
     constructor(private productService: ProductService){}
 
     @Post()
-    async createProduct(@Body(new ValidationPipe()) productDto: CreateProductDto){
+    @UsePipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true}))
+    async createProduct(@Body(new ValidationPipe()) productDto: CreateProductDto): Promise<ProductDoc>{
         return this.productService.createProduct(productDto);
     }
 
-    @Get(":productId")
-    findOne(@Param("productId") productId: String){
+    @Get()
+    findOne(@Query("productId") productId: String): Promise<ProductDoc>{
         return this.productService.findOne(productId);
     }
 
-    @Get()
-    async findAll(){
+    @Get("all")
+    async findAll(): Promise<ProductDoc[]>{
         return this.productService.findAll();
-
     }
 
-    @Put(":productId")
+    @Patch(":productId")
+    @UsePipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true}))
     async updateProduct(
         @Param("productId") productId: String,
         @Body() productDto: CreateProductDto
-        ){
+        ): Promise<ProductDoc>{
         return this.productService.updateProduct(productId, productDto);
         
     }
 
     @Delete(":productId")
-    async deleteProduct(@Param("productId") productId: String){
+    async deleteProduct(@Param("productId") productId: String): Promise<ProductDoc>{
         return this.productService.deleteProduct(productId);
     }
 }
