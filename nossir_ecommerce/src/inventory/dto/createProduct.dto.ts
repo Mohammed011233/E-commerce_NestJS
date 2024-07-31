@@ -21,7 +21,7 @@ export class CreateProductDto {
 
   @IsNotEmpty({ message: 'Category is required.' })
   @IsMongoId({ message: 'Category must be a valid Mongo ID.' })
-  category: string; // Assuming CategoryDto will be validated separately
+  category: CategoryDto; // Assuming CategoryDto will be validated separately
 
   @IsOptional()
   @IsString({ message: 'Description must be a string.' })
