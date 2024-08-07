@@ -11,6 +11,9 @@ export default () =>({
         host: process.env.MONGO_HOST,
         port: parseInt(process.env.MONGO_PORT, 10) || 27017,
         dbName: process.env.MONGO_DB,
+    },
+    jwt:{
+        secret: process.env.JWT_SECRIT
     }
 
 })

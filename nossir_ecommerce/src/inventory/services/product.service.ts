@@ -1,23 +1,34 @@
-import { HttpException, Injectable, InternalServerErrorException, NotFoundException, UseFilters } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotFoundException, UseFilters } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Product, ProductDoc } from "../models/product.entity";
+import { Product, ProductDoc } from "../schemas/product.schema";
 import { Model } from "mongoose";
 import { CreateProductDto } from "../dto/createProduct.dto";
-import { error } from "console";
 import { GlobalExceptionFilter } from "src/filters/globalException.filter";
-import { Category, CategoryDoc } from "../models/category.entity";
+import { Category, CategoryDoc } from "../schemas/category.schema";
 
 @Injectable()
 @UseFilters(GlobalExceptionFilter)
 export class ProductService{
 
     constructor(@InjectModel(Product.name) private productRepo: Model<ProductDoc>,
-                @InjectModel(Category.name) private categoryRepo: Model<CategoryDoc> ){}
+                // @InjectModel(Category.name) private categoryRepo: Model<CategoryDoc>
+                ){}
 
     async createProduct(productDto: CreateProductDto): Promise<ProductDoc>{
         try{
         const createdProduct = new this.productRepo(productDto);
         return createdProduct.save();
+        }catch(ex){
+            throw new InternalServerErrorException(ex.message);
+        }
+    }
+
+    async createMultiProducts(productsDto: CreateProductDto[]): Promise<ProductDoc[]>{
+        try{
+            const products = productsDto.map(
+                product => this.createProduct(product)
+            );
+            return Promise.all(products);
         }catch(ex){
             throw new InternalServerErrorException(ex.message);
         }
