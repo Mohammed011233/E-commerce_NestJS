@@ -1,6 +1,6 @@
 import { Injectable, UseFilters } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Category, CategoryDoc } from "../models/category.entity";
+import { Category, CategoryDoc } from "../schemas/category.schema";
 import { Model } from "mongoose";
 import { CategoryDto } from "../dto/category.dto";
 import { GlobalExceptionFilter } from "src/filters/globalException.filter";

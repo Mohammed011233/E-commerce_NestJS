@@ -3,7 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import path from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { InventoryModule } from './inventory/inventory.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './security/auth/auth.module';
 import dotenvConfig from './configration/dotenv.config';
+import { JwtModule } from '@nestjs/jwt';
+import { config } from 'dotenv';
+import { AppController } from './app.controller';
 
 
 @Module({
@@ -27,9 +32,23 @@ import dotenvConfig from './configration/dotenv.config';
       inject: [ConfigService]
     }),
 
-    InventoryModule
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (config) => ({
+        secret: config.get("jwt.secret"),
+      }),
+      
+      global: true,
+      inject: [ConfigService]
+    }),
+
+    InventoryModule,
+
+    AuthModule,
+
+    UserModule
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {

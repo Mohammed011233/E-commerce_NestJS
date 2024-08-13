@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ProductService } from "../services/product.service";
 import { CreateProductDto } from "../dto/createProduct.dto";
-import { ProductDoc } from "../models/product.entity";
+import { ProductDoc } from "../schemas/product.schema";
 
 @Controller("products")
 export class ProductController{
@@ -10,7 +10,7 @@ export class ProductController{
 
     @Post()
     @UsePipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true}))
-    async createProduct(@Body(new ValidationPipe()) productDto: CreateProductDto): Promise<ProductDoc>{
+    async createProduct(@Body() productDto: CreateProductDto): Promise<ProductDoc>{
         return this.productService.createProduct(productDto);
     }
 

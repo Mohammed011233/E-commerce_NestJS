@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { type } from "os";
 import {v4 as uuid} from "uuid";
-import { Category } from "./category.entity";
+import { Category } from "./category.schema";
 import mongoose from "mongoose";
 
 
@@ -49,7 +49,7 @@ export class Product{
     @Prop({required: true })
     image: String;
     
-    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref:'Category', index: true })
+    @Prop({required: true, type: mongoose.Schema.Types.ObjectId, ref:'Category' })
     category: Category;
     // @Prop()
     // category: String;
