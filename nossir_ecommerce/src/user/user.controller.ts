@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Patch, Post, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Patch, Post, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { UserServic } from "./user.service";
 import { UserDto } from "./dto/user.dto";
 import { UserDoc } from "./schemas/user.schema";
 import { promises } from "dns";
+import { AuthGuard } from "src/guards/auth.guard";
 
+@UseGuards(AuthGuard)
 @Controller("users")
 export class UserController{
     constructor(private userService: UserServic){}

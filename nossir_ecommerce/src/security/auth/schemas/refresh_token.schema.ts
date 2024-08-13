@@ -13,6 +13,6 @@ export class RefreshToken{
     expiryDate: Date;
 }
 
-export type tokenDoc = RefreshToken & Document;
+export type TokenDoc = RefreshToken & Document;
 
 export const tokenSchema = SchemaFactory.createForClass(RefreshToken);

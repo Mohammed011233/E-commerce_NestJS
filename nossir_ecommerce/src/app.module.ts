@@ -8,6 +8,7 @@ import { AuthModule } from './security/auth/auth.module';
 import dotenvConfig from './configration/dotenv.config';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from 'dotenv';
+import { AppController } from './app.controller';
 
 
 @Module({
@@ -47,7 +48,7 @@ import { config } from 'dotenv';
 
     UserModule
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {

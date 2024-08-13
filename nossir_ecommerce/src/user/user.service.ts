@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, flatten, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { UserDoc, UserEntity } from "./schemas/user.schema";
 import { Model } from "mongoose";
@@ -57,15 +57,12 @@ export class UserServic{
 
     async updateUser(userId: String, userDto: UserDto): Promise<UserDoc>{
        try{ 
+        
             const updatedUser = await 
                         this.userRepo.
-                                    findByIdAndUpdate(userId, userDto, {new: true});
+                                    findByIdAndUpdate(userId,userDto, {new: true });
 
-            // const updatedUser = await 
-            //         this.userRepo.
-            //                 findOne({ _id: userId});
             
-           
             return updatedUser; 
        }catch(ex){
             throw new InternalServerErrorException(ex.message);
